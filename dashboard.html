@@ -1,41 +1,49 @@
+<html>
+<head>
+<link href="http://metroui.org.ua/css/modern.css" rel="stylesheet">
+<link href="http://metroui.org.ua/css/modern-responsive.css" rel="stylesheet">
+
 <style>
 
 * {
   font-size: 20pt;
-  font-family: Helvetica;
   line-height: 100%;
 }
-
 li {
   padding: 15px;
   margin : 0;
   list-style: none;
   width: 100%;
   text-align: center;
+  font-weight: bold;
 }
-
 li:hover {
   background-color: #ccc;
 }
+.copyright, .copyright a {
+  text-align: right;
+  font-size: 10px;
+}
 
 </style>
-
-<button id='reset'>Reset</button>
+</head>
+<body class="metrouicss">
+<div class="copyright">Styled with <a href="http://metroui.org.ua">Metro UI CSS</a></div>
+<button id='reset' class="bg-color-green">Reset</button>
 <div id="order"></div>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+window.onload = function() {
   var socket = io.connect('http://localhost:8080');
   socket.on('team', function (data) {
-    console.log(data)
-    document.getElementById('order').innerHTML = "<ul>" + data.team.map(function(e) { return "<li>" + e + "</li>"; }).join("\n") + "</ul>";
+    document.getElementById('order').innerHTML = data.team.map(function(e) { return "<button class='default command-button bg-color-" + data.colors[e] + "'>" + e + "</button>"; }).join("\n");
   });
   document.getElementById('reset').onclick = function() {
     socket.emit('reset', {});
   }
+}
 </script>
-
-    
-
+</body>
+</html>
 
